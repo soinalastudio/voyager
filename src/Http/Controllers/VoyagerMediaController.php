@@ -225,22 +225,35 @@ class VoyagerMediaController extends Controller
     {
         // Check permission
         $this->authorize('browse_media');
-
-        $extension = $request->file->getClientOriginalExtension();
-        $name = Str::replaceLast('.'.$extension, '', $request->file->getClientOriginalName());
+    
+        if (!$request->hasFile('file') || !$request->file('file')->isValid()) {
+            return response()->json(['success' => false, 'message' => 'Invalid file upload.', 'path' => ''], 400);
+        }
+    
+        $file = $request->file('file');
+    
+       // Read from configuration
+        $allowedMimeTypes = config('voyager.media.allowed_mimetypes', []);
+        $allowedExtensions = config('voyager.media.allowed_extensions', []);
+        
+        $mimeType = $file->getMimeType();
+        $extension = strtolower($file->getClientOriginalExtension());
+        
+        // Validate against config-defined lists
+        if (!in_array($mimeType, $allowedMimeTypes) || !in_array($extension, $allowedExtensions)) {
+            return response()->json([
+                'success' => false, 
+                'message' => __('voyager::generic.mimetype_not_allowed'), 
+                'path' => ''
+            ], 400);
+        }
+    
+        $name = Str::replaceLast('.'.$extension, '', $file->getClientOriginalName());
         $details = json_decode($request->get('details') ?? '{}');
-        $absolute_path = Storage::disk($this->filesystem)->path($request->upload_path);
-
+    
         try {
-            $realPath = Storage::disk($this->filesystem)->path('/');
-
-            $allowedMimeTypes = config('voyager.media.allowed_mimetypes', '*');
-            if ($allowedMimeTypes != '*' && (is_array($allowedMimeTypes) && !in_array($request->file->getMimeType(), $allowedMimeTypes))) {
-                throw new Exception(__('voyager::generic.mimetype_not_allowed'));
-            }
-
             if (!$request->has('filename') || $request->get('filename') == 'null') {
-                while (Storage::disk($this->filesystem)->exists(Str::finish($request->upload_path, '/').$name.'.'.$extension, $this->filesystem)) {
+                while (Storage::disk($this->filesystem)->exists(Str::finish($request->upload_path, '/').$name.'.'.$extension)) {
                     $name = get_file_name($name);
                 }
             } else {
@@ -256,25 +269,23 @@ class VoyagerMediaController extends Controller
                     }, $name);
                 }
             }
-
-            $file = $request->file->storeAs($request->upload_path, $name.'.'.$extension, $this->filesystem);
-            $file = preg_replace('#/+#', '/', $file);
-
+    
+            $filePath = $file->storeAs($request->upload_path, $name.'.'.$extension, $this->filesystem);
+            $filePath = preg_replace('#/+#', '/', $filePath);
+    
             $imageMimeTypes = [
-                'image/jpeg',
-                'image/png',
-                'image/gif',
-                'image/bmp',
-                'image/svg+xml',
+                'image/jpeg', 'image/png', 'image/gif', 'image/bmp', 'image/svg+xml',
             ];
-            if (in_array($request->file->getMimeType(), $imageMimeTypes)) {
-                $content = Storage::disk($this->filesystem)->get($file);
+    
+            if (in_array($mimeType, $imageMimeTypes)) {
+                $content = Storage::disk($this->filesystem)->get($filePath);
                 $image = Image::make($content);
-
-                if ($request->file->getClientOriginalExtension() == 'gif') {
-                    copy($request->file->getRealPath(), $realPath.$file);
+    
+                if ($extension == 'gif') {
+                    copy($file->getRealPath(), Storage::disk($this->filesystem)->path($filePath));
                 } else {
                     $image = $image->orientate();
+    
                     // Generate thumbnails
                     if (property_exists($details, 'thumbnails') && is_array($details->thumbnails)) {
                         foreach ($details->thumbnails as $thumbnail_data) {
@@ -308,6 +319,7 @@ class VoyagerMediaController extends Controller
                                     }
                                 );
                             }
+    
                             if (
                                 property_exists($details, 'watermark') &&
                                 property_exists($details->watermark, 'source') &&
@@ -316,31 +328,36 @@ class VoyagerMediaController extends Controller
                             ) {
                                 $thumbnail = $this->addWatermarkToImage($thumbnail, $details->watermark);
                             }
+    
                             $thumbnail_file = $request->upload_path.$name.'-'.($thumbnail_data->name ?? 'thumbnail').'.'.$extension;
                             Storage::disk($this->filesystem)->put($thumbnail_file, $thumbnail->encode($extension, ($details->quality ?? 90))->encoded);
                         }
                     }
-                    // Add watermark to image
+    
                     if (property_exists($details, 'watermark') && property_exists($details->watermark, 'source')) {
                         $image = $this->addWatermarkToImage($image, $details->watermark);
                     }
-                    Storage::disk($this->filesystem)->put($file, $image->encode($extension, ($details->quality ?? 90))->encoded);
+    
+                    Storage::disk($this->filesystem)->put($filePath, $image->encode($extension, ($details->quality ?? 90))->encoded);
                 }
             }
-
-            $success = true;
-            $message = __('voyager::media.success_uploaded_file');
-            $path = preg_replace('/^public\//', '', $file);
-
-            event(new MediaFileAdded($path));
+    
+            event(new MediaFileAdded(preg_replace('/^public\//', '', $filePath)));
+    
+            return response()->json([
+                'success' => true,
+                'message' => __('voyager::media.success_uploaded_file'),
+                'path' => preg_replace('/^public\//', '', $filePath)
+            ]);
         } catch (Exception $e) {
-            $success = false;
-            $message = $e->getMessage();
-            $path = '';
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+                'path' => ''
+            ], 500);
         }
-
-        return response()->json(compact('success', 'message', 'path'));
     }
+
 
     public function crop(Request $request)
     {
