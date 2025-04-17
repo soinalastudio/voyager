@@ -1,11 +1,11 @@
 <?php
 
-namespace TCG\Voyager\Providers;
+namespace SoinalaStudio\Voyager\Providers;
 
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
-use TCG\Voyager\Events;
-use TCG\Voyager\Listeners;
+use SoinalaStudio\Voyager\Events;
+use SoinalaStudio\Voyager\Listeners;
 
 class VoyagerEventServiceProvider extends ServiceProvider
 {

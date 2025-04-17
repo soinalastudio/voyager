@@ -1,10 +1,10 @@
 <?php
 
-namespace TCG\Voyager\Models;
+namespace SoinalaStudio\Voyager\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
-use TCG\Voyager\Traits\Translatable;
+use SoinalaStudio\Voyager\Traits\Translatable;
 
 class Page extends Model
 {

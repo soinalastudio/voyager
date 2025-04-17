@@ -1,6 +1,6 @@
 <?php
 
-namespace TCG\Voyager\Tests;
+namespace SoinalaStudio\Voyager\Tests;
 
 class RouteTest extends TestCase
 {

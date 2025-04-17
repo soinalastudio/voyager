@@ -1,26 +1,26 @@
 <?php
 
-namespace TCG\Voyager\Tests;
+namespace SoinalaStudio\Voyager\Tests;
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Storage;
-use TCG\Voyager\Events\BreadAdded;
-use TCG\Voyager\Events\BreadDataAdded;
-use TCG\Voyager\Events\BreadDataDeleted;
-use TCG\Voyager\Events\BreadDataUpdated;
-use TCG\Voyager\Events\BreadDeleted;
-use TCG\Voyager\Events\BreadImagesDeleted;
-use TCG\Voyager\Events\BreadUpdated;
-use TCG\Voyager\Events\FileDeleted;
-use TCG\Voyager\Events\MediaFileAdded;
-use TCG\Voyager\Events\TableAdded;
-use TCG\Voyager\Events\TableDeleted;
-use TCG\Voyager\Events\TableUpdated;
-use TCG\Voyager\Models\DataType;
-use TCG\Voyager\Models\Page;
+use SoinalaStudio\Voyager\Events\BreadAdded;
+use SoinalaStudio\Voyager\Events\BreadDataAdded;
+use SoinalaStudio\Voyager\Events\BreadDataDeleted;
+use SoinalaStudio\Voyager\Events\BreadDataUpdated;
+use SoinalaStudio\Voyager\Events\BreadDeleted;
+use SoinalaStudio\Voyager\Events\BreadImagesDeleted;
+use SoinalaStudio\Voyager\Events\BreadUpdated;
+use SoinalaStudio\Voyager\Events\FileDeleted;
+use SoinalaStudio\Voyager\Events\MediaFileAdded;
+use SoinalaStudio\Voyager\Events\TableAdded;
+use SoinalaStudio\Voyager\Events\TableDeleted;
+use SoinalaStudio\Voyager\Events\TableUpdated;
+use SoinalaStudio\Voyager\Models\DataType;
+use SoinalaStudio\Voyager\Models\Page;
 
 class EventTest extends TestCase
 {

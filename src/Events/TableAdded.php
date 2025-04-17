@@ -1,9 +1,9 @@
 <?php
 
-namespace TCG\Voyager\Events;
+namespace SoinalaStudio\Voyager\Events;
 
 use Illuminate\Queue\SerializesModels;
-use TCG\Voyager\Database\Schema\Table;
+use SoinalaStudio\Voyager\Database\Schema\Table;
 
 class TableAdded
 {

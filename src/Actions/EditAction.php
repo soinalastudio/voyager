@@ -1,6 +1,6 @@
 <?php
 
-namespace TCG\Voyager\Actions;
+namespace SoinalaStudio\Voyager\Actions;
 
 class EditAction extends AbstractAction
 {

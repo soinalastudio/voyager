@@ -3,12 +3,12 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use TCG\Voyager\Models\DataRow;
-use TCG\Voyager\Models\DataType;
-use TCG\Voyager\Models\Menu;
-use TCG\Voyager\Models\MenuItem;
-use TCG\Voyager\Models\Page;
-use TCG\Voyager\Models\Permission;
+use SoinalaStudio\Voyager\Models\DataRow;
+use SoinalaStudio\Voyager\Models\DataType;
+use SoinalaStudio\Voyager\Models\Menu;
+use SoinalaStudio\Voyager\Models\MenuItem;
+use SoinalaStudio\Voyager\Models\Page;
+use SoinalaStudio\Voyager\Models\Permission;
 
 class PagesTableSeeder extends Seeder
 {
@@ -27,7 +27,7 @@ class PagesTableSeeder extends Seeder
                 'display_name_singular' => __('voyager::seeders.data_types.page.singular'),
                 'display_name_plural'   => __('voyager::seeders.data_types.page.plural'),
                 'icon'                  => 'voyager-file-text',
-                'model_name'            => 'TCG\\Voyager\\Models\\Page',
+                'model_name'            => 'SoinalaStudio\\Voyager\\Models\\Page',
                 'controller'            => '',
                 'generate_permissions'  => 1,
                 'description'           => '',

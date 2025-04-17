@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use TCG\Voyager\Models\Role;
+use SoinalaStudio\Voyager\Models\Role;
 
 class RolesTableSeeder extends Seeder
 {

@@ -1,11 +1,11 @@
 <?php
 
-namespace TCG\Voyager\Models;
+namespace SoinalaStudio\Voyager\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Route;
-use TCG\Voyager\Facades\Voyager;
-use TCG\Voyager\Traits\Translatable;
+use SoinalaStudio\Voyager\Facades\Voyager;
+use SoinalaStudio\Voyager\Traits\Translatable;
 
 class MenuItem extends Model
 {

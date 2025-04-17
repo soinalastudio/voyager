@@ -1,9 +1,9 @@
 <?php
 
-namespace TCG\Voyager\Tests;
+namespace SoinalaStudio\Voyager\Tests;
 
-use TCG\Voyager\Alert;
-use TCG\Voyager\Facades\Voyager;
+use SoinalaStudio\Voyager\Alert;
+use SoinalaStudio\Voyager\Facades\Voyager;
 
 class AlertTest extends TestCase
 {

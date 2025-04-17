@@ -1,6 +1,6 @@
 <?php
 
-namespace TCG\Voyager\Contracts;
+namespace SoinalaStudio\Voyager\Contracts;
 
 interface User
 {

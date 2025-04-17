@@ -1,9 +1,9 @@
 <?php
 
-namespace TCG\Voyager\Http\Controllers;
+namespace SoinalaStudio\Voyager\Http\Controllers;
 
 use Illuminate\Http\Request;
-use TCG\Voyager\Facades\Voyager;
+use SoinalaStudio\Voyager\Facades\Voyager;
 
 class VoyagerRoleController extends VoyagerBaseController
 {

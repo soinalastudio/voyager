@@ -1,9 +1,9 @@
 <?php
 
-namespace TCG\Voyager\Models;
+namespace SoinalaStudio\Voyager\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use TCG\Voyager\Facades\Voyager;
+use SoinalaStudio\Voyager\Facades\Voyager;
 
 class Permission extends Model
 {

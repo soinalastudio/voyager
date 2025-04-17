@@ -1,6 +1,6 @@
 <?php
 
-namespace TCG\Voyager\Traits;
+namespace SoinalaStudio\Voyager\Traits;
 
 trait AlertsMessages
 {

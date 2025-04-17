@@ -1,6 +1,6 @@
 <?php
 
-namespace TCG\Voyager\FormFields;
+namespace SoinalaStudio\Voyager\FormFields;
 
 class ImageHandler extends AbstractHandler
 {

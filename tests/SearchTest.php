@@ -1,16 +1,16 @@
 <?php
 
-namespace TCG\Voyager\Tests;
+namespace SoinalaStudio\Voyager\Tests;
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use TCG\Voyager\Http\Controllers\VoyagerBaseController;
-use TCG\Voyager\Models\DataRow;
-use TCG\Voyager\Models\DataType;
-use TCG\Voyager\Models\Post;
-use TCG\Voyager\Models\User;
+use SoinalaStudio\Voyager\Http\Controllers\VoyagerBaseController;
+use SoinalaStudio\Voyager\Models\DataRow;
+use SoinalaStudio\Voyager\Models\DataType;
+use SoinalaStudio\Voyager\Models\Post;
+use SoinalaStudio\Voyager\Models\User;
 
 class SearchTest extends TestCase
 {
@@ -132,7 +132,7 @@ class SearchTest extends TestCase
             'type' => 'relationship',
             'display_name' => 'Author',
             'details' => [
-                'model' => 'TCG\Voyager\Models\User',
+                'model' => 'SoinalaStudio\Voyager\Models\User',
                 'table' => 'users',
                 'type' => 'belongsTo',
                 'column' => 'author_id',

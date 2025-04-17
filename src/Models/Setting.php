@@ -1,9 +1,9 @@
 <?php
 
-namespace TCG\Voyager\Models;
+namespace SoinalaStudio\Voyager\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use TCG\Voyager\Events\SettingUpdated;
+use SoinalaStudio\Voyager\Events\SettingUpdated;
 
 class Setting extends Model
 {

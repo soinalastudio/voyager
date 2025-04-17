@@ -1,9 +1,9 @@
 <?php
 
-namespace TCG\Voyager\Listeners;
+namespace SoinalaStudio\Voyager\Listeners;
 
 use Cache;
-use TCG\Voyager\Events\SettingUpdated;
+use SoinalaStudio\Voyager\Events\SettingUpdated;
 
 class ClearCachedSettingValue
 {

@@ -1,20 +1,20 @@
 <?php
 
-namespace TCG\Voyager\Http\Controllers;
+namespace SoinalaStudio\Voyager\Http\Controllers;
 
 use Exception;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use TCG\Voyager\Database\Schema\SchemaManager;
-use TCG\Voyager\Events\BreadDataAdded;
-use TCG\Voyager\Events\BreadDataDeleted;
-use TCG\Voyager\Events\BreadDataRestored;
-use TCG\Voyager\Events\BreadDataUpdated;
-use TCG\Voyager\Events\BreadImagesDeleted;
-use TCG\Voyager\Facades\Voyager;
-use TCG\Voyager\Http\Controllers\Traits\BreadRelationshipParser;
+use SoinalaStudio\Voyager\Database\Schema\SchemaManager;
+use SoinalaStudio\Voyager\Events\BreadDataAdded;
+use SoinalaStudio\Voyager\Events\BreadDataDeleted;
+use SoinalaStudio\Voyager\Events\BreadDataRestored;
+use SoinalaStudio\Voyager\Events\BreadDataUpdated;
+use SoinalaStudio\Voyager\Events\BreadImagesDeleted;
+use SoinalaStudio\Voyager\Facades\Voyager;
+use SoinalaStudio\Voyager\Http\Controllers\Traits\BreadRelationshipParser;
 
 class VoyagerBaseController extends Controller
 {
