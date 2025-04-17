@@ -17,7 +17,7 @@ This fork of Voyager is maintained independently and has been detached from the 
 
 To install via Composer:
 ```bash
-composer require tcg/voyager
+composer require soinalastudio/voyager
 ```
 
 ### 2. Database Setup
