@@ -121,24 +121,25 @@ if (\Illuminate\Support\Str::startsWith(Auth::user()->avatar, 'http://') || \Ill
 
 <script>
     @if(Session::has('alerts'))
-        let alerts = {!! json_encode(Session::get('alerts')) !!};
+        let alerts = @json(Session::get('alerts'));
         helpers.displayAlerts(alerts, toastr);
     @endif
 
     @if(Session::has('message'))
+        // Ensure toastr treats the message strictly as text
+        toastr.options.escapeHtml = true;
 
-    // TODO: change Controllers to use AlertsMessages trait... then remove this
-    var alertType = {!! json_encode(Session::get('alert-type', 'info')) !!};
-    var alertMessage = {!! json_encode(Session::get('message')) !!};
-    var alerter = toastr[alertType];
+        var alertType = "{{ e(Session::get('alert-type', 'info')) }}";
+        var alertMessage = "{{ e(Session::get('message')) }}";
 
-    if (alerter) {
-        alerter(alertMessage);
-    } else {
-        toastr.error("toastr alert-type " + alertType + " is unknown");
-    }
+        if (toastr[alertType]) {
+            toastr[alertType](alertMessage);
+        } else {
+            toastr.error("Unknown alert type: " + alertType);
+        }
     @endif
 </script>
+
 @include('voyager::media.manager')
 @yield('javascript')
 @stack('javascript')

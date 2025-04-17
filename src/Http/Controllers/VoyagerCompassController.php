@@ -43,12 +43,36 @@ class VoyagerCompassController extends Controller
             return $this->download(LogViewer::pathToLogFile(base64_decode($this->request->input('download'))));
         } elseif ($this->request->has('del')) {
             $active_tab = 'logs';
-            app('files')->delete(LogViewer::pathToLogFile(base64_decode($this->request->input('del'))));
-
-            return redirect($this->request->url().'?logs=true')->with([
-                'message'    => __('voyager::compass.logs.delete_success').' '.base64_decode($this->request->input('del')),
-                'alert-type' => 'success',
-            ]);
+            $decodedFile = base64_decode($this->request->input('del'), true);
+        
+            // Validate decoded file input
+            if ($decodedFile === false) {
+                return redirect($this->request->url().'?logs=true')->with([
+                    'message'    => __('voyager::compass.logs.delete_failure'),
+                    'alert-type' => 'error',
+                ]);
+            }
+        
+            try {
+                $safeFileName = basename($decodedFile);
+                // Allow only safe filename characters (letters, numbers, dots, underscores, hyphens)
+                $safeFileName = preg_replace('/[^A-Za-z0-9._-]/', '', $safeFileName);
+        
+                // Ensure file is within log directory
+                $filePath = LogViewer::pathToLogFile($safeFileName);
+        
+                app('files')->delete($filePath);
+        
+                return redirect($this->request->url().'?logs=true')->with([
+                    'message'    => __('voyager::compass.logs.delete_success').' '.e($safeFileName),
+                    'alert-type' => 'success',
+                ]);
+            } catch (Exception $e) {
+                return redirect($this->request->url().'?logs=true')->with([
+                    'message'    => __('voyager::compass.logs.delete_failure'),
+                    'alert-type' => 'error',
+                ]);
+            }
         } elseif ($this->request->has('delall')) {
             $active_tab = 'logs';
             foreach (LogViewer::getFiles(true) as $file) {
