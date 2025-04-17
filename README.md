@@ -78,8 +78,14 @@ php artisan voyager:admin user@example.com --create
 
 You'll be prompted to enter the user's name and password.
 
-## Enhanced Security for Media Uploads
-We've explicitly defined allowed MIME types and file extensions in `config/voyager.php` for greater security. Ensure you adjust these lists according to your application's needs.
+## 🚨 Security Enhancements
+This fork includes critical security patches addressing:
+
+- CVE-2024-55417 (File Upload RCE)
+- CVE-2024-55416 (Reflected XSS)
+- CVE-2024-55415 (File Leak/Deletion)
+
+Always keep your application up-to-date and review permissions and input handling.
 
 ## Documentation & Resources
 - **Website & Documentation:** [https://voyager.devdojo.com/](https://voyager.devdojo.com/)

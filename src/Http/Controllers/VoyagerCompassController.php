@@ -39,37 +39,41 @@ class VoyagerCompassController extends Controller
 
         if ($this->request->input('download')) {
             $active_tab = 'logs';
-
-            return $this->download(LogViewer::pathToLogFile(base64_decode($this->request->input('download'))));
+            $decodedFile = base64_decode($this->request->input('download'), true);
+        
+            if ($decodedFile === false) {
+                abort(400, 'Invalid file parameter.');
+            }
+        
+            try {
+                $filePath = LogViewer::pathToLogFile($decodedFile);
+        
+                return $this->download($filePath);
+            } catch (\Exception $e) {
+                abort(404, 'File not found or inaccessible.');
+            }
         } elseif ($this->request->has('del')) {
             $active_tab = 'logs';
             $decodedFile = base64_decode($this->request->input('del'), true);
         
-            // Validate decoded file input
             if ($decodedFile === false) {
                 return redirect($this->request->url().'?logs=true')->with([
-                    'message'    => __('voyager::compass.logs.delete_failure'),
+                    'message' => __('voyager::compass.logs.delete_failure'),
                     'alert-type' => 'error',
                 ]);
             }
         
             try {
-                $safeFileName = basename($decodedFile);
-                // Allow only safe filename characters (letters, numbers, dots, underscores, hyphens)
-                $safeFileName = preg_replace('/[^A-Za-z0-9._-]/', '', $safeFileName);
-        
-                // Ensure file is within log directory
-                $filePath = LogViewer::pathToLogFile($safeFileName);
-        
+                $filePath = LogViewer::pathToLogFile($decodedFile);
                 app('files')->delete($filePath);
         
                 return redirect($this->request->url().'?logs=true')->with([
-                    'message'    => __('voyager::compass.logs.delete_success').' '.e($safeFileName),
+                    'message' => __('voyager::compass.logs.delete_success').' '.e(basename($decodedFile)),
                     'alert-type' => 'success',
                 ]);
             } catch (Exception $e) {
                 return redirect($this->request->url().'?logs=true')->with([
-                    'message'    => __('voyager::compass.logs.delete_failure'),
+                    'message' => __('voyager::compass.logs.delete_failure'),
                     'alert-type' => 'error',
                 ]);
             }
@@ -236,20 +240,17 @@ class LogViewer
      */
     public static function pathToLogFile($file)
     {
-        $logsPath = storage_path('logs');
+        $logsPath = realpath(storage_path('logs'));
 
-        if (app('files')->exists($file)) { // try the absolute path
-            return $file;
+        // Normalize the requested file path to prevent traversal attacks
+        $requestedFilePath = realpath($logsPath . DIRECTORY_SEPARATOR . $file);
+
+        // Check if resolved path is within the logs directory
+        if ($requestedFilePath === false || strpos($requestedFilePath, $logsPath) !== 0) {
+            throw new \Exception('No such log file or access denied.');
         }
 
-        $file = $logsPath.'/'.$file;
-
-        // check if requested file is really in the logs directory
-        if (dirname($file) !== $logsPath) {
-            throw new \Exception('No such log file');
-        }
-
-        return $file;
+        return $requestedFilePath;
     }
 
     /**
